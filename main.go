@@ -12,6 +12,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+// Screen Variables
 const (
 	screenWidth        = 640
 	screenHeight       = 480
@@ -20,6 +21,7 @@ const (
 	yGridCountInScreen = screenHeight / gridSize
 )
 
+// Movement Variables
 const (
 	dirNone = iota
 	dirLeft
@@ -43,6 +45,11 @@ type Game struct {
 	bestScore     int
 	level         int
 }
+
+//=====================================
+// Collision detection and staging
+// movement.
+//=====================================
 
 func (g *Game) collidesWithApple() bool {
 	return g.snakeBody[0].X == g.apple.X &&
@@ -82,6 +89,9 @@ func (g *Game) reset() {
 	g.moveDirection = dirNone
 }
 
+// ===============================
+// Implementation of movement
+// ===============================
 func (g *Game) Update() error {
 	// Handle player input
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
@@ -151,7 +161,10 @@ func (g *Game) Update() error {
 	return nil
 }
 
-// TODO: Finish screen function
+// ======================================
+// Drawing to the screen and placing
+// minimal UI to show stats.
+// ======================================
 func (g *Game) Draw(screen *ebiten.Image) {
 	for _, v := range g.snakeBody {
 		vector.DrawFilledRect(screen, float32(v.X*gridSize), float32(v.Y*gridSize), gridSize, gridSize,
@@ -171,6 +184,9 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
 
+// =============================
+// Defining core game elements
+// =============================
 func newGame() *Game {
 	g := &Game{
 		apple:     Position{X: 3 * gridSize, Y: 3 * gridSize},
